@@ -1,27 +1,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@100;300;400&display=swap');
+:root {
+    --stellWhite: rgb(255, 255, 255);
+    --stellBrandBlue: #243782;
+    --stellBrandBlueLighter: #4055a8;
+    --stellAnthracite: #282b34;
+    --stellAnthraciteLighter: #4d525e;
+    --stellAnthraciteDarker: #171924;
+    --stellErrorColor: #f99494; 
+    --stellTangerine: #e94e24;
+    --stellTangerineLighter: #f39671;
+    --stellTangerineDarker: #e42313;
+    --stellMint: #43aaa0;
+    --stellMintLighter: #a0d4cd;
+    --stellMintDarker: #006e6a;
+    --stellOrange: #eca935;
+    --stellOrangeLighter: #fecd50;
+    --stellOrangeDarker: #ef7d00;
+
+    --stellAccentColor: var(--stellBrandBlue);
+    --stellAccentColorLighter: var(--stellBrandBlueLighter);
+    --stellAccentColorDarker: var(--stellBrandBlueLighter);
+    --stellSubColor: var(--stellTangerine);
+    --stellSubColorLighter: var(--stellTangerineLighter);
+    --stellSubColorDarker: var(--stellTangerineDarker);
+
+    --stellForegroundColor: var(--stellAnthraciteDarker);
+    --stellBackgroundColor: var(--stellWhite);
+}
 html {
-    background-color: rgba(27, 38, 54, 1);
-    text-align: center;
-    color: white;
+    background-color: var(--stellBackgroundColor);
 }
 
 body {
     margin: 0;
-    color: white;
+    color: var(--stellForegroundColor);
     font-family: "Encode Sans Expanded", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
     "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
 }
 
-@font-face {
-    font-family: "Nunito";
-    font-style: normal;
-    font-weight: 400;
-    src: local(""),
-    url("assets/fonts/nunito-v16-latin-regular.woff2") format("woff2");
-}
-
-#app {
-    height: 100vh;
+juri-doc {
+    height: 100dvh;
     text-align: center;
 }
