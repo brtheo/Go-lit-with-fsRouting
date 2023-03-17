@@ -1,6 +1,6 @@
 import { RouteConfig } from "@lit-labs/router/routes";
 import {unsafeHTML} from 'lit/directives/unsafe-html.js'
-
+// yes
 import { GetRoutes } from '../../wailsjs/go/main/App'
 
 /* @vite-ignore */
