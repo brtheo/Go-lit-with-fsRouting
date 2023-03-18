@@ -20,7 +20,8 @@
     "@adobe/lit-mobx": "^2.0.0",
     "@lit-labs/router": "^0.1.1",
     "lit": "^2.2.8",
-    "mobx": "^6.8.0"
+    "mobx": "^6.8.0",
+    "urlpattern-polyfill": "^6.0.2"
   },
   "devDependencies": {
     "typescript": "^4.6.4",

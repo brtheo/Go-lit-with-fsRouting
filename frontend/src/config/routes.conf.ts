@@ -1,20 +1,33 @@
 import { RouteConfig } from "@lit-labs/router/routes";
 import {unsafeHTML} from 'lit/directives/unsafe-html.js'
-// yes
 import { GetRoutes } from '../../wailsjs/go/main/App'
 
-/* @vite-ignore */
-const makeRoutes = async (): Promise<RouteConfig[]> => 
-  (await GetRoutes()).map(route =>
-    Object.create({
-      path: route == 'home' ? '/' : `/${route}`,
-      render: () => 
-        unsafeHTML(
-          `<${route}-page>
-          </${route}-page>`
-        ),
-      enter: async () => await import(`../pages/${route}`)
-    }) as RouteConfig
-  ) as RouteConfig[]
+const makeArgs = (route): string => { 
+  let ret: string | null = ''
+  if(route.Args !== null) {
+    const {origin} = location;
+    const pattern = new URLPattern(`${origin}${route.Filename}`);
+    console.log(pattern, location.href)
+    for(const [k,v] of Object.entries(pattern.exec(location.href).pathname.groups)) {
+      ret += `${k}=${v} `;
+    }
+  }
+  return ret;
+}
 
+const makeRoutes = async (): Promise<RouteConfig[]> => {
+  console.log((await GetRoutes()))
+  return (await GetRoutes()).map(route => {
+    return Object.create({
+      path: route.Path,
+      render: () => {    
+       
+        return unsafeHTML(
+          `<${route.Component} ${makeArgs(route)} >
+          </${route.Component}>`
+        )},
+      enter: async () => await import(`../pages${route.Filename}`)
+    }) as RouteConfig }
+  ) as RouteConfig[]
+}
 export default await makeRoutes()

@@ -1,8 +1,7 @@
-import { MobxLitElement } from "@adobe/lit-mobx";
-import { HTMLTemplateResult } from 'lit';
-export default class JuriDoc extends MobxLitElement {
+import { LitElement } from 'lit';
+export default class JuriDoc extends LitElement {
     private _router;
-    render(): HTMLTemplateResult;
+    render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
     interface HTMLElementTagNameMap {
