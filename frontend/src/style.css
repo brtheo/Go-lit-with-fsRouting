@@ -38,8 +38,6 @@ body {
     "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
 }
-
-juri-doc {
-    height: 100dvh;
-    text-align: center;
+* {
+    box-sizing: border-box;
 }

@@ -33,7 +33,7 @@ func (a *App) GetRoutes() (routes []Route) {
 	routesMap := make(map[string][]string)
 	routesArr := make([]string, 0)
 
-	routesMap, routesArr = recursiveRoute(filepath.Join(wd, "frontend", "src", "pages"), "/", routesMap, routesArr)
+	routesMap, routesArr = recursiveRoute(filepath.Join(wd, "frontend", "src", "pages"), string(os.PathSeparator), routesMap, routesArr)
 
 	routes = makeRoutes(routesMap)
 	fmt.Println(routes)
@@ -43,10 +43,10 @@ func (a *App) GetRoutes() (routes []Route) {
 func recursiveRoute(path, pathPrefix string, routesMap map[string][]string, routes []string) (map[string][]string, []string) {
 	entries, err := os.ReadDir(path)
 	check(err)
-	dirs := strings.Split(path, "/")
+	dirs := strings.Split(path, string(os.PathSeparator))
 
 	if dirs[len(dirs)-1] != "pages" {
-		pathPrefix += dirs[len(dirs)-1] + "/"
+		pathPrefix += dirs[len(dirs)-1] + string(os.PathSeparator)
 	} else {
 		routesMap = make(map[string][]string)
 	}
@@ -59,7 +59,7 @@ func recursiveRoute(path, pathPrefix string, routesMap map[string][]string, rout
 	// fmt.Println("SUBROUTES :", subRoutes)
 	// var reroutes []string
 
-	routes = transformTo(routes, Prepend, "/")
+	routes = transformTo(routes, Prepend, string(os.PathSeparator))
 	// routes = transformTo(routes, strings.TrimSuffix, "index")
 	routesMap[pathPrefix] = routes
 
@@ -80,28 +80,28 @@ func makeRoutes(m map[string][]string) (routes []Route) {
 	for dir, files := range m {
 		for i := 0; i <= len(files)-1; i++ {
 			file := files[i]
-			file = strings.TrimPrefix(file, "/")
+			file = strings.TrimPrefix(file, string(os.PathSeparator))
 			cmp := file
 			var args []string
 			path := dir
-			if strings.HasSuffix(dir, "/") && len(dir) > 1 {
-				path = strings.TrimSuffix(dir, "/")
+			if strings.HasSuffix(dir, string(os.PathSeparator)) && len(dir) > 1 {
+				path = strings.TrimSuffix(dir, string(os.PathSeparator))
 			}
-			if len(strings.Split(dir, "/")) > 2 {
-				dirs := strings.Split(dir, "/")
-				fmt.Println(strings.Split(dir, "/"))
+			if len(strings.Split(dir, string(os.PathSeparator))) > 2 {
+				dirs := strings.Split(dir, string(os.PathSeparator))
+				fmt.Println(strings.Split(dir, string(os.PathSeparator)))
 				cmp = dirs[len(dirs)-2]
 				if strings.Contains(file, "[") {
 					formatedFileName := ReplaceDynamicPattern(file)
-					path += "/" + formatedFileName
+					path += string(os.PathSeparator) + formatedFileName
 					args = delete_empty(strings.Split(file, ":"))
 				}
 			}
 
 			r := Route{
 				cmp + "-page",
-				path,
-				dir + file,
+				strings.ReplaceAll(path, string(os.PathSeparator), "/"),
+				strings.ReplaceAll(dir+file, string(os.PathSeparator), "/"),
 				args,
 			}
 			routes = append(routes, r)
