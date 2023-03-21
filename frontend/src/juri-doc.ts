@@ -11,6 +11,7 @@ export default class JuriDoc extends LitElement {
   private _router = new Router(this, routes);
   override render() {
     return html`
+    ${location.href}
       ${this._router.outlet()}
     `;
   }

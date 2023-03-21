@@ -91,8 +91,9 @@ func makeRoutes(m map[string][]string) (routes []Route) {
 				dirs := strings.Split(dir, "/")
 				fmt.Println(strings.Split(dir, "/"))
 				cmp = dirs[len(dirs)-2]
-				if strings.Contains(file, ":") {
-					path += "/*"
+				if strings.Contains(file, "[") {
+					formatedFileName := ReplaceDynamicPattern(file)
+					path += "/" + formatedFileName
 					args = delete_empty(strings.Split(file, ":"))
 				}
 			}

@@ -1,5 +1,7 @@
 package main
 
+import "regexp"
+
 func check(err error) {
 	if err != nil {
 		panic(err)
@@ -54,6 +56,11 @@ func delete_empty(s []string) (r []string) {
 		}
 	}
 	return
+}
+
+func ReplaceDynamicPattern(input string) string {
+	re := regexp.MustCompile(`\[(\w+)\]`)
+	return re.ReplaceAllString(input, ":$1")
 }
 
 type Route struct {
