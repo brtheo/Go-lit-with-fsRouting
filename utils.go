@@ -30,10 +30,8 @@ func transformTo[Type, ReturnType any](data []Type, f func(Type, string) ReturnT
 }
 
 func filterWithOpt[Type any](data []Type, f func(Type, string) bool, opt string) (res []Type, res2 []Type) {
-
 	res = make([]Type, 0, len(data))
 	res2 = make([]Type, 0, len(data))
-
 	for _, e := range data {
 		if f(e, opt) {
 			res = append(res, e)
@@ -41,7 +39,6 @@ func filterWithOpt[Type any](data []Type, f func(Type, string) bool, opt string)
 			res2 = append(res2, e)
 		}
 	}
-
 	return
 }
 
@@ -67,5 +64,5 @@ type Route struct {
 	Component string
 	Path      string
 	Filename  string
-	Args      []string
+	Args      bool
 }

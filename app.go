@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/fs"
 	"os"
@@ -34,9 +35,14 @@ func (a *App) GetRoutes() (routes []Route) {
 	routesArr := make([]string, 0)
 
 	routesMap, routesArr = recursiveRoute(filepath.Join(wd, "frontend", "src", "pages"), string(os.PathSeparator), routesMap, routesArr)
-
+	jsonStr, err := json.Marshal(routesMap)
+	if err != nil {
+		fmt.Printf("Error: %s", err.Error())
+	} else {
+		fmt.Println(string(jsonStr))
+	}
 	routes = makeRoutes(routesMap)
-	fmt.Println(routes)
+	// fmt.Println(routes)
 	return
 }
 
@@ -47,26 +53,20 @@ func recursiveRoute(path, pathPrefix string, routesMap map[string][]string, rout
 
 	if dirs[len(dirs)-1] != "pages" {
 		pathPrefix += dirs[len(dirs)-1] + string(os.PathSeparator)
-	} else {
-		routesMap = make(map[string][]string)
 	}
 	routes = mapTo(entries, fs.DirEntry.Name)
 
 	routes, subRoutes := filterWithOpt(routes, strings.HasSuffix, ".ts")
+
 	routes = transformTo(routes, strings.TrimSuffix, ".ts")
 
-	// fmt.Println("ROUTES :", routes)
-	// fmt.Println("SUBROUTES :", subRoutes)
-	// var reroutes []string
-
 	routes = transformTo(routes, Prepend, string(os.PathSeparator))
-	// routes = transformTo(routes, strings.TrimSuffix, "index")
+
 	routesMap[pathPrefix] = routes
 
 	var tempMap map[string][]string
 	for _, route := range subRoutes {
 		tempMap, routes = recursiveRoute(filepath.Join(path, route), pathPrefix, routesMap, routes)
-		// routes = append(routes, reroutes...)
 		for k, v := range tempMap {
 			routesMap[k] = v
 		}
@@ -82,7 +82,7 @@ func makeRoutes(m map[string][]string) (routes []Route) {
 			file := files[i]
 			file = strings.TrimPrefix(file, string(os.PathSeparator))
 			cmp := file
-			var args []string
+			args := false
 			path := dir
 			if strings.HasSuffix(dir, string(os.PathSeparator)) && len(dir) > 1 {
 				path = strings.TrimSuffix(dir, string(os.PathSeparator))
@@ -94,7 +94,8 @@ func makeRoutes(m map[string][]string) (routes []Route) {
 				if strings.Contains(file, "[") {
 					formatedFileName := ReplaceDynamicPattern(file)
 					path += string(os.PathSeparator) + formatedFileName
-					args = delete_empty(strings.Split(file, ":"))
+
+					args = true
 				}
 			}
 
