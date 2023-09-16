@@ -1,13 +1,10 @@
-// import { MobxLitElement } from "@adobe/lit-mobx";
-import {html, HTMLTemplateResult, LitElement} from 'lit'
+import {html, LitElement} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-
-
 
 @customElement('sub-page')
 export default class SubPage extends LitElement {
   @property({type:String}) id
-  override render(): HTMLTemplateResult {
+  override render() {
     return html`
     <section>
       <h1>prop received from url /editor/sub/:id = ${this.id}</h1>
@@ -19,7 +16,7 @@ export default class SubPage extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'sub-page':SubPage
+    'sub-page': SubPage
   }
 }
 
